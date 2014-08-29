@@ -19,6 +19,7 @@ describe GitDuplicator do
 
     it 'mirrors from service to service without ' \
     'force_create_destination option' do
+      skip
       # Setup
       from = GitDuplicator::Services::GithubRepository
       .new('naught', 'avdi')
@@ -44,6 +45,7 @@ describe GitDuplicator do
 
     it 'mirrors from service to service with ' \
     'force_create_destination option' do
+      skip
       # Setup
       from = GitDuplicator::Services::GithubRepository
       .new('naught', 'avdi')
@@ -70,6 +72,7 @@ describe GitDuplicator do
 
     it 'mirrors from basic to service with ' \
     'force_create_destination option' do
+      skip
       # Setup
       from = GitDuplicator::Repository
       .new('naught', 'https://github.com/avdi/naught.git')
