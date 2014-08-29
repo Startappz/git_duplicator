@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/git_duplicator.svg)](http://badge.fury.io/rb/git_duplicator) [![Build Status](https://travis-ci.org/Startappz/git_duplicator.svg?branch=master)](https://travis-ci.org/Startappz/git_duplicator) [![Coverage Status](https://coveralls.io/repos/Startappz/git_duplicator/badge.png?branch=master)](https://coveralls.io/r/Startappz/git_duplicator?branch=master) [![Dependency Status](https://gemnasium.com/Startappz/git_duplicator.svg)](https://gemnasium.com/Startappz/git_duplicator) [![Code Climate](https://codeclimate.com/github/Startappz/git_duplicator/badges/gpa.svg)](https://codeclimate.com/github/Startappz/git_duplicator)
 
 
-Duplicating git repositories without forking.
+Duplicating git repositories without forking. It depends on the flow described in [this](https://help.github.com/articles/duplicating-a-repository) article.
 
 - [x] Duplicate any repository
 - [x] Additional Github support
