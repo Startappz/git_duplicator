@@ -1,6 +1,6 @@
 # Git Duplicator
 
-Duplicating git repositories withou forking.
+Duplicating git repositories without forking.
 
 - [x] Duplicate any repository
 - [x] Additional Github support

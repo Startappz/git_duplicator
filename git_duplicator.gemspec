@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = GitDuplicator::Version
   gem.authors       = ["Khaled alHabache"]
   gem.email         = ["khellls@gmail.com"]
-  gem.summary       = %q{Duplicating git repositories withou forking.}
-  gem.description   = %q{Duplicating git repositories withou forking.}
+  gem.summary       = %q{Duplicating git repositories without forking.}
+  gem.description   = %q{Duplicating git repositories without forking.}
   gem.homepage      = "https://github.com/Startappz/git_duplicator"
   gem.license       = 'LGPL-3'
   gem.required_ruby_version = '>= 1.9.3'
