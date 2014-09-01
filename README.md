@@ -25,9 +25,13 @@ Or install it yourself as:
 
 ## Usage
 
-### Basic usage
+### Duplicate with no future updates 
 
-Duplicate a repository. It assumes that you have the destination repository initiated. 
+Duplicate a repository. Then you can turn off the source repo and move to the mirrored one.
+
+#### Basic usage
+
+It assumes that you have the destination repository initiated. 
 
 ```ruby
 require 'git_duplicator'
@@ -38,7 +42,7 @@ to = GitDuplicator::Repository
 GitDuplicator.perform(from, to)
 
 ```
-### Advanced usage
+#### Advanced usage
 - You can create the destination repository automatically. This needs you to provide the needed authentication credentials for the script.
 - You can set the clone working path locally for the script to work. It's a temporary workplace that will get swiped after finishing.
 
@@ -47,8 +51,50 @@ require 'git_duplicator'
 from = GitDuplicator::Repository
 .new('source repo name', 'source repo url')
 to = GitDuplicator::Services::GithubRepository
-.new('destination repo name', 'destination owner', {auth2_token: 'some token'})
-GitDuplicator.perform(from, to, force_create_destination: true, clone_path: 'path/to/tmp')
+.new('destination repo name', 'destination owner',
+ credentials: { auth2_token: 'some token' },
+ remote_options: { has_issues: false, has_wiki: false })
+GitDuplicator.perform(from, to, force_create_destination: true, clone_path: 'path/to/clone/folder')
+```
+### Duplicate with future updates 
+
+Duplicate a repository. To update your mirror, fetch updates and push, which could be automated by running a cron job.
+
+#### Basic usage
+
+It assumes that you have the destination repository initiated. 
+
+```ruby
+require 'git_duplicator'
+from = GitDuplicator::Repository
+.new('source repo name', 'source repo url')
+to = GitDuplicator::Repository
+.new('destination repo name', 'destination repo url')
+GitDuplicator.perform(from, to)
+
+# Later on if you want to update the mirrored one
+local_repo = GitDuplicator::Repository
+.new('source repo name', 'source repo url', 'path/to/working/directory')
+local_repo.update_mirrored
+
+```
+#### Advanced usage
+- You can create the destination repository automatically. This needs you to provide the needed authentication credentials for the script.
+- You can set the clone working path locally for the script to work. It's a temporary workplace that will get swiped after finishing.
+
+```ruby
+require 'git_duplicator'
+from = GitDuplicator::Repository
+.new('source repo name', 'source repo url')
+to = GitDuplicator::Services::GithubRepository
+.new('destination repo name', 'destination owner', 
+credentials: { auth2_token: 'some token' })
+GitDuplicator.perform_for_update(from, to, force_create_destination: true, clone_path: 'path/to/clone/folder')
+
+# Later on if you want to update the mirrored one
+local_repo = GitDuplicator::Repository
+.new('source repo name', 'source repo url', 'path/to/working/directory')
+local_repo.update_mirrored
 ```
 
 ### Available Services

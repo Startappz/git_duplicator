@@ -9,10 +9,11 @@ describe GitDuplicator::Services::BitbucketRepository do
   end
   let(:name) { ENV['TESTING_REPO'] }
   let(:owner) { ENV['BITBUCKET_USER'] }
-  let(:options) do
+  let(:remote_options) do
     { scm: 'git', is_private: true, fork_policy: 'no_public_forks' }
   end
-  let(:repo) { described_class.new(name, owner, credentials, options) }
+  let(:options) { { credentials: credentials, remote_options: remote_options } }
+  let(:repo) { described_class.new(name, owner, options) }
 
   describe '#delete' do
     it 'deletes the repo in case it exists' do
@@ -34,7 +35,7 @@ describe GitDuplicator::Services::BitbucketRepository do
     it 'creates the repository in case of not defined' do
       stub_request(:post, described_class::BASE_URI +
                    "/repositories/#{owner}/#{name}")
-      .with(body: options.to_json)
+      .with(body: remote_options.to_json)
       .to_return(body: '', status: 200)
       expect { repo.create }.not_to raise_error
     end
@@ -42,7 +43,7 @@ describe GitDuplicator::Services::BitbucketRepository do
     it 'raises an exception in case of errors' do
       stub_request(:post, described_class::BASE_URI +
                    "/repositories/#{owner}/#{name}")
-      .with(body: options.to_json)
+      .with(body: remote_options.to_json)
       .to_return(body: 'something wrong', status: 401)
       expect { repo.create }
       .to raise_error(GitDuplicator::RepositoryCreationError, /something wrong/)

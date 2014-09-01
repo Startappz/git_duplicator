@@ -1,7 +1,5 @@
-require 'fileutils'
-require_relative 'null_logger'
-
 module GitDuplicator
+  # Abstract class
   class Duplicator
     attr_accessor :from, :to, :logger, :clone_path, :force_create_destination
 
@@ -33,10 +31,6 @@ module GitDuplicator
       clean_up
     end
 
-    private
-
-    attr_accessor :source_cloned
-
     def recreate_destination
       return unless force_create_destination
       logger.info("Deleting existing destination repo: #{to.url}")
@@ -47,20 +41,29 @@ module GitDuplicator
 
     def clone_source
       logger.info("Cloning bare Gitorious repo: #{from.url}")
-      from.bare_clone(clone_path)
-      self.source_cloned = true
+      perform_clone_source
     end
 
     def mirror
       logger.info("Mirroring Gitorious to Bitbucket: #{from.url}")
-      from.mirror(to.url)
+      perform_mirror
     end
 
     def clean_up
-      return unless source_cloned
       logger.info 'Clean local source repo'
-      FileUtils.rm_rf("#{clone_path}/#{from.name}")
-      @cloned = nil
+      perform_clean_up
+    end
+
+    def perform_clone_source
+      fail NotImplementedError
+    end
+
+    def perform_mirror
+      fail NotImplementedError
+    end
+
+    def perform_clean_up
+      fail NotImplementedError
     end
   end
 end

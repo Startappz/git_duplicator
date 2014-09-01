@@ -6,9 +6,10 @@ module GitDuplicator
     # Initializer
     # @param [String] name name of the repository
     # @param [String] owner owner of the repository
-    def initialize(name, owner)
+    # @param [String] working_directory working directory of the repository
+    def initialize(name, owner, working_directory = nil)
       self.owner = owner
-      super(name, url)
+      super(name, url, working_directory)
     end
 
     # URL of the repositroy

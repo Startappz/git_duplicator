@@ -6,21 +6,22 @@ module GitDuplicator
     class GithubRepository < ServiceRepository
       BASE_URI = 'https://api.github.com'
 
-      attr_accessor :credentials, :options
+      attr_accessor :credentials, :remote_options, :working_directory
 
       # Initializer
-      # @param [String] name name of the repository
-      # @param [String] owner owner of the repository
-      # @param [Hash] credentials
-      # @option credentials [Symbol] :oauth2_token used in oAuth2 authentication
-      # @option credentials [Symbol] :username used in basic authentication
-      # @option credentials [Symbol] :password used in basic authentication
-      # @param [Hash] options options for creation
-      # @see https://developer.github.com/v3/repos/#create
-      def initialize(name, owner, credentials = {}, options = {})
-        super(name, owner)
-        self.credentials = credentials
-        self.options = options
+      # @param [Hash] options
+      #   * :credentials (Hash) credentials for remote service
+      #     * :oauth2_token (Symbol) used in oAuth2 authentication
+      #     * :username (Symbol) used in basic authentication
+      #     * :password (Symbol) used in basic authentication
+      #   * :remote_options (Hash) creation options for remote service
+      #    @see @see https://developer.github.com/v3/repos/#create
+      #   * :working_directory (String) assing a working directory
+      def initialize(name, owner, options = {})
+        self.credentials = options.fetch(:credentials) { {} }
+        self.remote_options = options.fetch(:remote_options) { {} }
+        self.working_directory = options.fetch(:working_directory) { nil }
+        super(name, owner, working_directory)
       end
 
       # URL of the repositroy
@@ -33,7 +34,7 @@ module GitDuplicator
       def create
         request_url = BASE_URI + '/user/repos'
         response = HTTP.with(headers(:post, request_url))
-        .post(request_url, json: options.merge(name: name))
+        .post(request_url, json: remote_options.merge(name: name))
         code, body = response.code.to_i, response.body
         fail(RepositoryCreationError, body) unless 201 == code
       end

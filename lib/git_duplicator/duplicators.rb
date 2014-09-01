@@ -1,0 +1,5 @@
+require 'fileutils'
+require_relative 'null_logger'
+require_relative 'duplicator/duplicator'
+require_relative 'duplicator/mirror_duplicator'
+require_relative 'duplicator/update_duplicator'

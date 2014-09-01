@@ -1,9 +1,9 @@
 module GitDuplicator
   # Gem's version
   class Version
-    MAJOR = 0
+    MAJOR = 1
     MINOR = 0
-    PATCH = 1
+    PATCH = 0
 
     class << self
       # @return [String]

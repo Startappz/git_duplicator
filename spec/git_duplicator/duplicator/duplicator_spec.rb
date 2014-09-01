@@ -1,4 +1,4 @@
-require_relative '../helper'
+require_relative '../../helper'
 
 describe GitDuplicator::Duplicator do
   let(:path) { '/somepath' }
@@ -6,9 +6,38 @@ describe GitDuplicator::Duplicator do
     double(name: 'somename', bare_clone: nil, mirror: nil, url: 'somewhere1')
   end
   let(:to) { double(delete: nil, create: nil, url: 'somewhere2') }
-  let(:duplicator) { GitDuplicator::Duplicator.new(from, to, options) }
+  let(:duplicator) { described_class.new(from, to, options) }
+
+  describe '#perform_mirror' do
+    let(:options) { {} }
+    it 'raises an exception in case of not defined' do
+      expect { duplicator.perform_mirror }
+      .to raise_error(NotImplementedError)
+    end
+  end
+
+  describe '#perform_clone_source' do
+    let(:options) { {} }
+    it 'raises an exception in case of not defined' do
+      expect { duplicator.perform_clone_source }
+      .to raise_error(NotImplementedError)
+    end
+  end
+
+  describe '#perform_clean_up' do
+    let(:options) { {} }
+    it 'raises an exception in case of not defined' do
+      expect { duplicator.perform_clone_source }
+      .to raise_error(NotImplementedError)
+    end
+  end
 
   describe '#perform' do
+    before do
+      allow(duplicator).to receive(:perform_clone_source)
+      allow(duplicator).to receive(:perform_mirror)
+      allow(duplicator).to receive(:perform_clean_up)
+    end
     context 'force_create_destination is set' do
       let(:options) { { clone_path: path, force_create_destination: true } }
 
@@ -22,19 +51,18 @@ describe GitDuplicator::Duplicator do
         duplicator.perform
       end
 
-      it 'bare clones the source repo' do
-        expect(from).to receive(:bare_clone).with(path)
+      it 'clones the source repo' do
+        expect(duplicator).to receive(:clone_source)
         duplicator.perform
       end
 
-      it 'mirrors from bare clone to destination' do
-        expect(from).to receive(:mirror).with(to.url)
+      it 'mirrors to destination' do
+        expect(duplicator).to receive(:mirror)
         duplicator.perform
       end
 
       it 'cleans up' do
-        expect(FileUtils).to receive(:rm_rf)
-        .with("#{duplicator.clone_path}/#{from.name}")
+        expect(duplicator).to receive(:clean_up)
         duplicator.perform
       end
 
@@ -57,19 +85,18 @@ describe GitDuplicator::Duplicator do
         duplicator.perform
       end
 
-      it 'bare clones the source repo' do
-        expect(from).to receive(:bare_clone).with(path)
+      it 'clones the source repo' do
+        expect(duplicator).to receive(:clone_source)
         duplicator.perform
       end
 
-      it 'mirrors from bare clone to destination' do
-        expect(from).to receive(:mirror).with(to.url)
+      it 'mirrors to destination' do
+        expect(duplicator).to receive(:mirror)
         duplicator.perform
       end
 
       it 'cleans up' do
-        expect(FileUtils).to receive(:rm_rf)
-        .with("#{duplicator.clone_path}/#{from.name}")
+        expect(duplicator).to receive(:clean_up)
         duplicator.perform
       end
 

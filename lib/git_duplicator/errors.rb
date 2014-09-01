@@ -8,4 +8,8 @@ module GitDuplicator
   class RepositoryCloningError < MigrationError; end
 
   class RepositoryMirorringError < MigrationError; end
+
+  class RepositoryMirorredUpdatingError < MigrationError; end
+
+  class RepositorySettingRemoteError < MigrationError; end
 end

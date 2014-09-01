@@ -6,10 +6,11 @@ describe GitDuplicator::Services::GithubRepository do
   end
   let(:name) { ENV['TESTING_REPO'] }
   let(:owner) { ENV['GITHUB_USER'] }
-  let(:options) do
+  let(:remote_options) do
     { has_issues: false, has_wiki: false }
   end
-  let(:repo) { described_class.new(name, owner, credentials, options) }
+  let(:options) { { credentials: credentials, remote_options: remote_options } }
+  let(:repo) { described_class.new(name, owner, options) }
 
   describe '#delete' do
     it 'deletes the repo in case it exists' do
@@ -34,7 +35,7 @@ describe GitDuplicator::Services::GithubRepository do
     it 'creates the repository in case of not defined' do
       stub_request(:post, described_class::BASE_URI + '/user/repos')
       .with(
-        body: options.merge(name: name).to_json,
+        body: remote_options.merge(name: name).to_json,
         headers: { 'Authorization' => "token #{credentials[:oauth2_token]}" }
       )
       .to_return(body: '', status: 201)
@@ -43,7 +44,7 @@ describe GitDuplicator::Services::GithubRepository do
 
     it 'raises an exception in case of errors' do
       stub_request(:post, described_class::BASE_URI + '/user/repos')
-      .with(body: options.merge(name: name).to_json)
+      .with(body: remote_options.merge(name: name).to_json)
       .to_return(body: 'something wrong', status: 401)
       expect { repo.create }
       .to raise_error(GitDuplicator::RepositoryCreationError)
