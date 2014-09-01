@@ -70,7 +70,7 @@ from = GitDuplicator::Repository
 .new('source repo name', 'source repo url')
 to = GitDuplicator::Repository
 .new('destination repo name', 'destination repo url')
-GitDuplicator.perform(from, to)
+GitDuplicator.perform_for_update(from, to)
 
 # Later on if you want to update the mirrored one
 local_repo = GitDuplicator::Repository
