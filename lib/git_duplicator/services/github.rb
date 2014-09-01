@@ -1,6 +1,4 @@
 require 'http'
-require_relative '../helpers/authorization_header'
-
 module GitDuplicator
   module Services
     class GithubRepository < ServiceRepository

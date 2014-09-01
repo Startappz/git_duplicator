@@ -27,7 +27,7 @@ describe GitDuplicator::Duplicator do
   describe '#perform_clean_up' do
     let(:options) { {} }
     it 'raises an exception in case of not defined' do
-      expect { duplicator.perform_clone_source }
+      expect { duplicator.perform_clean_up }
       .to raise_error(NotImplementedError)
     end
   end
