@@ -35,11 +35,13 @@ It assumes that you have the destination repository initiated.
 
 ```ruby
 require 'git_duplicator'
-from = GitDuplicator::Repository
-.new('source repo name', 'source repo url')
-to = GitDuplicator::Repository
-.new('destination repo name', 'destination repo url')
+
+from = GitDuplicator::Repository.new('source repo name', 'source repo url')
+
+to = GitDuplicator::Repository.new('mirrored repo name', 'mirrored repo url')
+
 GitDuplicator.perform(from, to)
+
 
 ```
 #### Advanced usage
@@ -48,13 +50,21 @@ GitDuplicator.perform(from, to)
 
 ```ruby
 require 'git_duplicator'
-from = GitDuplicator::Repository
-.new('source repo name', 'source repo url')
-to = GitDuplicator::Services::GithubRepository
-.new('destination repo name', 'destination owner',
- credentials: { auth2_token: 'some token' },
- remote_options: { has_issues: false, has_wiki: false })
-GitDuplicator.perform(from, to, force_create_destination: true, clone_path: 'path/to/clone/folder')
+
+from = GitDuplicator::Repository.new('source repo name', 'source repo url')
+
+to = GitDuplicator::Services::GithubRepository.new(
+  'mirrored repo name', 'mirrored owner',
+  credentials: { auth2_token: 'some token' },
+  remote_options: { has_issues: false, has_wiki: false }
+)
+
+GitDuplicator.perform(
+  from, to,
+  force_create_destination: true,
+  clone_path: 'path/to/clone/folder'
+)
+
 ```
 ### Duplicate with future updates 
 
@@ -66,15 +76,20 @@ It assumes that you have the destination repository initiated.
 
 ```ruby
 require 'git_duplicator'
-from = GitDuplicator::Repository
-.new('source repo name', 'source repo url')
-to = GitDuplicator::Repository
-.new('destination repo name', 'destination repo url')
+
+from = GitDuplicator::Repository.new('source repo name', 'source repo url')
+
+to = GitDuplicator::Repository.new('mirrored repo name', 'mirrored repo url')
+
 GitDuplicator.perform_for_update(from, to)
 
 # Later on if you want to update the mirrored one
-local_repo = GitDuplicator::Repository
-.new('source repo name', 'source repo url', 'path/to/working/directory')
+local_repo = GitDuplicator::Repository.new(
+  'source repo name',
+  'source repo url',
+  'path/to/working/directory'
+)
+
 local_repo.update_mirrored
 
 ```
@@ -84,17 +99,31 @@ local_repo.update_mirrored
 
 ```ruby
 require 'git_duplicator'
-from = GitDuplicator::Repository
-.new('source repo name', 'source repo url')
-to = GitDuplicator::Services::GithubRepository
-.new('destination repo name', 'destination owner', 
-credentials: { auth2_token: 'some token' })
-GitDuplicator.perform_for_update(from, to, force_create_destination: true, clone_path: 'path/to/clone/folder')
+
+from = GitDuplicator::Repository.new('source repo name', 'source repo url')
+
+to = GitDuplicator::Services::GithubRepository.new(
+  'mirrored repo name',
+  'mirrored owner',
+  credentials: { auth2_token: 'some token' },
+  remote_options: { has_issues: false, has_wiki: false }
+)
+
+GitDuplicator.perform_for_update(
+  from, to,
+  force_create_destination: true,
+  clone_path: 'path/to/clone/folder'
+)
 
 # Later on if you want to update the mirrored one
-local_repo = GitDuplicator::Repository
-.new('source repo name', 'source repo url', 'path/to/working/directory')
+local_repo = GitDuplicator::Repository.new(
+  'source repo name',
+  'source repo url',
+  'path/to/working/directory'
+)
+
 local_repo.update_mirrored
+
 ```
 
 ### Available Services
