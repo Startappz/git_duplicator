@@ -172,8 +172,11 @@ describe GitDuplicator do
       # Verify
       expect(mirrored.object('HEAD^').to_s).to eq(source.object('HEAD^').to_s)
 
-      local_repo = GitDuplicator::Repository
-      .new('naught', 'https://github.com/avdi/naught.git', "#{clone_path}/#{source_name}")
+      local_repo = GitDuplicator::Repository.new(
+        'naught',
+        'https://github.com/avdi/naught.git',
+        "#{clone_path}/#{source_name}"
+      )
       local_repo.update_mirrored
 
       #Teardown
