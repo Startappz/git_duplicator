@@ -5,9 +5,9 @@
 
 Duplicating git repositories without forking. It depends on the flow described in [this](https://help.github.com/articles/duplicating-a-repository) article.
 
-- [x] Duplicate any repository
-- [x] Additional Github support
-- [x] Additional Bibucket support
+- [x] Duplicate any repository in two ways: one time usage and frequent updates.
+- [x] Additional Github [support](https://github.com/Startappz/git_duplicator/blob/master/lib/git_duplicator/services/github.rb) to create and delete repositories.
+- [x] Additional Bibucket [support](https://github.com/Startappz/git_duplicator/blob/master/lib/git_duplicator/services/bitbucket.rb)  to create and delete repositories.
 
 ## Installation
 
@@ -55,7 +55,7 @@ from = GitDuplicator::Repository.new('source repo name', 'source repo url')
 
 to = GitDuplicator::Services::GithubRepository.new(
   'mirrored repo name', 'mirrored owner',
-  credentials: { auth2_token: 'some token' },
+  credentials: { oauth2_token: 'some token' },
   remote_options: { has_issues: false, has_wiki: false }
 )
 
@@ -105,7 +105,7 @@ from = GitDuplicator::Repository.new('source repo name', 'source repo url')
 to = GitDuplicator::Services::GithubRepository.new(
   'mirrored repo name',
   'mirrored owner',
-  credentials: { auth2_token: 'some token' },
+  credentials: { oauth2_token: 'some token' },
   remote_options: { has_issues: false, has_wiki: false }
 )
 
